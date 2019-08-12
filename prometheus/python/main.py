@@ -1,4 +1,5 @@
 import prometheus_client as prom
+from prometheus_flask_exporter import PrometheusMetrics
 import random
 import time
 import os
@@ -20,6 +21,8 @@ def process_request(t):
 
 
 app = Flask("pyProm")
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
 
 
 @app.route('/', methods=["GET", "POST"])
