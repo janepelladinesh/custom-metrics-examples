@@ -1,6 +1,7 @@
 import prometheus_client as prom
 import random
 import time
+import os
 from threading import Thread
 
 from flask import Flask, request
