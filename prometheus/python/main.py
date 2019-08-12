@@ -5,9 +5,13 @@ from threading import Thread
 
 from flask import Flask, request
 from flask_prometheus import monitor
+workers = int(os.environ.get('GUNICORN_PROCESSES', '3'))
+threads = int(os.environ.get('GUNICORN_THREADS', '1'))
+
+forwarded_allow_ips = '*'
+secure_scheme_headers = { 'X-Forwarded-Proto': 'https' }
 
 req_summary = prom.Summary('python_my_req_example', 'Time spent processing a request')
-
 
 @req_summary.time()
 def process_request(t):
@@ -45,4 +49,5 @@ def thr():
 Thread(target=thr).start()
 
 monitor(app, port=8080)
-app.run(host="0.0.0.0", port=80)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
